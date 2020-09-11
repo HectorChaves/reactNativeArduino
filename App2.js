@@ -26,6 +26,7 @@ function App(){
     // this.startUsbListener = this.startUsbListener.bind(this);
     // this.stopUsbListener = this.stopUsbListener.bind(this);
   
+    const timeToDisconnect = 50;
 
   useEffect(() => {
     startUsbListener()
@@ -169,13 +170,73 @@ function App(){
   }
   
   function handleOpenLocker1(){
-    RNSerialport.writeHexString("A0000001200005D00");
-    RNSerialport.disconnect();
+    RNSerialport.isOpen().then(isOpen => {
+      if(isOpen) {
+        RNSerialport.writeHexString("A0000001200005D00");
+          RNSerialport.disconnect();
+      } else {
+        console.log("Is oprn?", "no");
+
+    }})
   }
 
   function handleOpenLocker2(){
+    RNSerialport.isOpen().then(isOpen => {
+      if(isOpen) {
     RNSerialport.writeHexString("A001000100005C00");
-    RNSerialport.disconnect();
+      RNSerialport.disconnect()
+    } else {
+      console.log("Is oprn?", "no");
+    }})
+  }
+
+  function handleOpenLocker3(){
+    RNSerialport.writeHexString("A002000100005B00");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+  
+  function handleOpenLocker4(){
+    RNSerialport.writeHexString("A003000100005A00");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+
+  function handleOpenLocker5(){
+    RNSerialport.writeHexString("A004000100005900");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+
+  function handleOpenLocker6(){
+    RNSerialport.writeHexString("A005000100005800");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+
+  function handleOpenLocker7(){
+    RNSerialport.writeHexString("A006000100005700");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+
+  function handleOpenLocker8(){
+    RNSerialport.writeHexString("A007000100005600");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
+  }
+
+  function handleOpenLocker7(){
+    RNSerialport.writeHexString("A008000100005500");
+    // setTimeout(() => {
+      RNSerialport.disconnect()
+    // }, timeToDisconnect);
   }
 
   const buttonStyle = status => {
@@ -184,6 +245,29 @@ function App(){
       : Object.assign({}, styles.button, { backgroundColor: "#C0C0C0" });
   };
 
+  function listDevice(){
+    RNSerialport.getDeviceList().then(response => 
+      console.log(response)//list
+    );
+  }
+
+  function connectToDevice(){
+    RNSerialport.connectDevice("/dev/bus/usb/001/002", 38400);
+  }
+
+  function connectionStatus(){
+    RNSerialport.isOpen().then(isOpen => {
+      if(isOpen) {
+        console.log("Is open?", "yes");
+      } else {
+        console.log("Is oprn?", "no");
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  
   
     return (
       <ScrollView style={styles.body}>
@@ -208,13 +292,13 @@ function App(){
               </Text>
             </View>
           </View>
-          <ScrollView style={styles.output} nestedScrollEnabled={true}>
+          {/* <ScrollView style={styles.output} nestedScrollEnabled={true}>
             <Text style={styles.full}>
               {output === "" ? "No Content" : output}
             </Text>
-          </ScrollView>
+          </ScrollView> */}
 
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <Text>Send</Text>
             <TextInput
               style={styles.textInput}
@@ -222,7 +306,7 @@ function App(){
               value={sendText}
               placeholder={"Send Text"}
             />
-          </View>
+          </View> */}
           <View style={styles.line2}>
             <TouchableOpacity
               style={buttonStyle(connected)}
@@ -250,19 +334,101 @@ function App(){
             >
               <Text style={styles.buttonText}>Convert</Text>
             </TouchableOpacity> */}
+              </View>
+              <View style={styles.line2}>
+
               <TouchableOpacity
               style={buttonStyle(connected)}
               onPress={() => handleOpenLocker1()}
               disabled={!connected}
-            >
+              >
               <Text style={styles.buttonText}>Locker 1</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={buttonStyle(connected)}
               onPress={() => handleOpenLocker2()}
               disabled={!connected}
-            >
+              >
               <Text style={styles.buttonText}>Locker 2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker3()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 3</Text>
+            </TouchableOpacity>
+            </View>
+
+            <View style={styles.line2}>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker4()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 4</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker5()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 5</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker6()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 6</Text>
+            </TouchableOpacity>
+            </View>
+            <View style={styles.line2}>
+              
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker7()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 7</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker8()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 8</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker9()}
+              disabled={!connected}
+              >
+              <Text style={styles.buttonText}>Locker 9</Text>
+            </TouchableOpacity>
+            </View>
+            
+          <View>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => listDevice()}
+              disabled={!connected}
+            >
+              <Text style={styles.buttonText}>List Device</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(!connected)}
+              onPress={() => connectToDevice()}
+              disabled={connected}
+            >
+              <Text style={styles.buttonText}>Connect</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => connectionStatus()}
+              // disabled={!connected}
+            >
+              <Text style={styles.buttonText}>Connection Status</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -306,7 +472,7 @@ const styles = StyleSheet.create({
   },
   output: {
     marginTop: 10,
-    height: 300,
+    height: 100,
     padding: 10,
     backgroundColor: "#FFFFFF",
     borderWidth: 1
@@ -323,13 +489,16 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 16,
     marginBottom: 16,
+    marginLeft: 2,
+    marginRight: 2,
     paddingLeft: 15,
     paddingRight: 15,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#147efb",
-    borderRadius: 3
+    borderRadius: 3,
+    borderColor: "black"
   },
   buttonText: {
     color: "#FFFFFF"
