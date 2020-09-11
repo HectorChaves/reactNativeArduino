@@ -115,23 +115,23 @@ function App(){
   function onReadData(data) {
     if (returnedDataType === definitions.RETURNED_DATA_TYPES.INTARRAY) {
       const payload = RNSerialport.intArrayToUtf16(data.payload);
-      console.log(payload);
+      // console.log(payload);
       setOutput(output + payload);
-      console.log(output);
+      // console.log(output);
     } else if (returnedDataType === definitions.RETURNED_DATA_TYPES.HEXSTRING) {
       const payload = RNSerialport.hexToUtf16(data.payload);
 
-      console.log(data);
+      // console.log(data);
 
       if ((payload !== " ") && (payload !== "")){
 
-        console.log(payload)
+        // console.log(payload)
         setOutput(output.concat(payload));
-        console.log(output);
+        // console.log(output);
 
       } else {
-        console.log(payload)
-        console.log(output);
+        // console.log(payload)
+        // console.log(output);
         return
       }
     }
@@ -161,11 +161,21 @@ function App(){
   }
 
   function handleSendButtonTurnOn(){
-    RNSerialport.writeHexString("A100000100005D00");
+    RNSerialport.writeString("l");
   }
 
   function handleSendButtonTurnOff(){
-    RNSerialport.writeHexString("A101000100005C00");
+    RNSerialport.writeString("d");
+  }
+  
+  function handleOpenLocker1(){
+    RNSerialport.writeHexString("A0000001200005D00");
+    RNSerialport.disconnect();
+  }
+
+  function handleOpenLocker2(){
+    RNSerialport.writeHexString("A001000100005C00");
+    RNSerialport.disconnect();
   }
 
   const buttonStyle = status => {
@@ -228,7 +238,7 @@ function App(){
             >
               <Text style={styles.buttonText}>Desliga</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.button}
               onPress={() => handleClearButton()}
             >
@@ -239,6 +249,20 @@ function App(){
               onPress={() => handleConvertButton()}
             >
               <Text style={styles.buttonText}>Convert</Text>
+            </TouchableOpacity> */}
+              <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker1()}
+              disabled={!connected}
+            >
+              <Text style={styles.buttonText}>Locker 1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttonStyle(connected)}
+              onPress={() => handleOpenLocker2()}
+              disabled={!connected}
+            >
+              <Text style={styles.buttonText}>Locker 2</Text>
             </TouchableOpacity>
           </View>
         </View>
